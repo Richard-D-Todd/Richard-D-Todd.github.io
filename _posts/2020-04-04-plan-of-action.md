@@ -28,4 +28,8 @@ For my work I have also wanted to learn more about Excel Macros VBA and so I hav
 
 I have heard mixed things about the quality of Udemy courses so we shall see how this course goes, however I only want to know how to automate a few tasks, therefore I don't need too much depth.
 
-![Coursera Logo(https://www.coursera.org)](https://upload.wikimedia.org/wikipedia/en/d/d3/Coursera_company_logo%2C_square%2C_blue_background%2C_white_lettering_coursera-logo-square.png)
+[![Coursera Logo](https://upload.wikimedia.org/wikipedia/en/d/d3/Coursera_company_logo%2C_square%2C_blue_background%2C_white_lettering_coursera-logo-square.png)](https://www.coursera.org "Coursera Homepage") | [![Udemy Logo](https://d3q6qq2zt8nhwv.cloudfront.net/platform/dbb1a59e6e594c7c8119a9220968a767.png)](https://www.udemy.com/ "Udemy Homepage")
+_I'm currently taking courses through the popular MOOC sites Coursera and Udemy._
+
+# Plan of action!
+
