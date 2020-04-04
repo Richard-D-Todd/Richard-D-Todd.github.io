@@ -59,7 +59,7 @@ plugins:
 author:
   name   : "Richard Todd"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "Leaning data analysis and coding one week at a time."
+  bio    : "Learning data analysis and coding one week at a time."
   links:
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin"
@@ -77,7 +77,7 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/"
-    - label: "Instagram"
+    
       
 
 defaults:
