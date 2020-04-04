@@ -1,8 +1,11 @@
 ---
-layout: post
-title:  "First Post!"
-date:   2020-04-04 12:30:00 +0100
-categories: jekyll update
+title: "First Post!"
+date: 2019-04-04
+categories:
+  - blog
+tags:
+  - Introduction
+  - firstpost
 ---
 
 # So this is my first post! #
