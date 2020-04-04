@@ -6,6 +6,7 @@ categories:
 tags:
   - Introduction
   - firstpost
+classes: wide
 ---
 
 # So this is my first post! #
