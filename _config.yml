@@ -60,6 +60,8 @@ author:
   name   : "Richard Todd"
   avatar : "/assets/images/bio-photo.jpg"
   bio    : "Learning data analysis and coding one week at a time."
+  location: Manchester, UK
+
   links:
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin"
@@ -67,7 +69,7 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/"
-      
+ 
 
 footer:
   links:
