@@ -1,6 +1,6 @@
 ---
 title: "First Post!"
-date: 2020-04-04
+last_modified_at: 2020-04-05
 categories:
   - blog
 tags:
@@ -9,7 +9,7 @@ tags:
 classes: wide
 ---
 
-# So this is my first post! #
+ So this is my first post!
 
 ## What is the goal of this site? ##
 This site is intended to be a space for me to document what I have been learning on a weekly basis. It can be anything I have learnt during my week, however my focus at the minute is on data analysis and learning to code.
