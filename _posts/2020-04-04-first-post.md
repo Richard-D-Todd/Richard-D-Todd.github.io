@@ -2,7 +2,7 @@
 title: "First Post!"
 last_modified_at: 2020-04-05
 categories:
-  - blog
+  - Blog
 tags:
   - Introduction
   - firstpost
