@@ -145,7 +145,7 @@ __You can learn DATA SCIENCE for FREE. I'll show you how.__
 _https://www.youtube.com/watch?v=eTxyviU0Ddo_  
 >PYTHON BASICS  
 >Introduction to Python, The Scientific Libraries, Advanced Python Programming and the Pandas Section of Data and Empirics https://lectures.quantecon.org/py/  
->Chapters 1 - 4 in this book https://github.com/wesm/pydata-book  
+>Chapters 1 - 4 in this book https://github.com/jakevdp/PythonDataScienceHandbook/blob/8a34a4f653bdbdc01415a94dc20d4e9b97438965/notebooks/Index.ipynb 
 >Then this Pandas tutorial https://pandas.pydata.org/pandas-docs/stable/getting_started/10min.html  
 >Here are some excellent pandas code examples https://github.com/wesm/pydata-book  
 >
