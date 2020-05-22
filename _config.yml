@@ -80,7 +80,10 @@ footer:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/Richard-D-Todd"
     
-      
+collections:
+  projects:
+    output: true
+    permalink: /:collection/:path/ 
 
 defaults:
   # _posts
@@ -94,7 +97,7 @@ defaults:
       comments: true
       share: true
       related: true
-    classes: wide
+      classes: wide
 
   # _pages
   - scope:
@@ -104,9 +107,18 @@ defaults:
       layout: single
       author_profile: true
     header:
-      image: /assets/images/header.jfif
-      caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
-    classes: wide 
+      image: 
+      caption: 
+      classes: wide 
+
+ # _projects
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: single
+      author_profile: true
+      share: true
 
 category_archive:
   type: liquid
@@ -114,3 +126,5 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+

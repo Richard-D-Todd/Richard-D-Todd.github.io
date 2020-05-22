@@ -1,13 +1,14 @@
 ---
-permalink: /projects/
-title: "Projects"
+title: "Online Groceries: Scrapping Receipt Email and Analysing Spending"
+excerpt: "Foo Bar design system including logo mark, website design, and branding applications."
+header:
+  image: /assets/images/online-groceries.jpg
+  teaser: /assets/images/online-groceries.jpg
 classes: wide
 ---
 
-# Links to my projects below:
-
 ## Grocery Shopping Email Analysis
-[Project repo on Github](https://github.com/Richard-D-Todd/Extract-Email)
+[Project repo on Github][1]
 
 ### Context:
 I do my regular grocery shops online though the British supermarket chain ASDA. When the delivery is packed and on the way an email is sent to me with a breakdown of which items are unavailable, substituted and sent as ordered, along with the prices and quantities. I want to be able to collect this data and analyse my spending on groceries.
@@ -25,15 +26,4 @@ The aim of this project is to get data from the receipt email sent for my online
 ### Status:
 Work in progress
 
-## Dice Rolling
-No currently on Github
-
-### Context:
-I am planning on playing the popular roleplaying game Dungeons and Dragons (DnD) with my friends. This game is focused around the rolling of various dice, in particular 20 sided dice, and I would like to investigate the probabilities of a variety of dice rolls.
-
-### Aims:
-* Plot the probabilities of various dice rolls in Matplotlib.
-* Write a script that can take an input of any combination of dice to roll and simulate mutiple dice rolls to output a probability for each outcome possible.
-
-## Software and tools used:
-* Python to similate dice rolls and plot probabilities of various outcomes.
+[1]: https://github.com/Richard-D-Todd/Extract-Email
