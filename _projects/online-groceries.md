@@ -1,6 +1,6 @@
 ---
 title: "Online Groceries: Scrapping Receipt Email and Analysing Spending"
-excerpt: "Foo Bar design system including logo mark, website design, and branding applications."
+excerpt: "Looking into my groceries spending."
 header:
   image: /assets/images/online-groceries.jpg
   teaser: /assets/images/online-groceries.jpg

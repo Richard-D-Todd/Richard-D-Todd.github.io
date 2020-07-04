@@ -1,6 +1,6 @@
 ---
 title: "Rolling Dice: Probabilities and Rolling Script"
-excerpt: "Foo Bar design system including logo mark, website design, and branding applications."
+excerpt: "Probabilities of outcomes from rolling multiple dice."
 header:
   image: /assets/images/Dice.jpg
   teaser: /assets/images/Dice.jpg
