@@ -1,5 +1,5 @@
 ---
-title: "Online Groceries: Extracting Data from Receipt Email and Analysing Spending"
+title: "Online Groceries: Extracting Data from Receipt Emails and Analysing Spending"
 excerpt: "Looking into my groceries spending."
 header:
   image: /assets/images/online-groceries_wide.jpg
@@ -39,6 +39,9 @@ The aim of this project is to get data from the receipt email sent for my online
 * Python is used to extract the contents of the email files, convert them to Pandas DataFrames and then export to .CSV files and a PostgreSQL database. It will then be used for analysis and visualisation, using Pandas and Matplotlib to help me investigate my spending habits.
 * PostgreSQL is used for a database to hold the data extracted from the emails. Since I will have multiple tables, I will use SQL statements inline in a Jupyter notebook to query the tables.
 
+### Status:
+Work in progress
+
 ## Update: 18/07/20
 Currently with this project I have two python scripts. One which can take a receipt email, extract and clean the data and then save to CSV and enter the data into a PostgreSQL database.
 
@@ -46,16 +49,16 @@ The second script works the sdame way as the first, but can be used on a whole d
 
 I have an analysis Jupyter notebook. With this so far I have several graphs. These are shown the gallery above. I have also written SQL queries to return the most expensive and most common items from my shopping. I have created the following:
 1. Bar chart to show total for each delivery against delivery date.
-![Total for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig1.png)
+  ![Total for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig1.png)
 2. Bar chart to show the total and subtotal for each delivery. The x axis is still delivery date as above, however the variable is not coninuous and is instead discreete. The reason I did this was because I am not neccessarily interested in the gap between deliveries with this visual, but instead the manitude of the subtotal and the total.
-![Total and subtotal for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig2.png)
+  ![Total and subtotal for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig2.png)
 3. Total spend per calendar month ploted as a bar chart, with the average as a horizonal line.
 ![Total Spend per Calendar Month](https://rdtodd.co.uk/assets/images/Groceries-fig3.png) 
 4. Total spend per pay month plotted the same as above. The reason I wanted to show the total spend per pay month is because I get paid on the 27th of each month. This skews the calendar month totals as I may for example delay a payment until after payday when I have more money, or to bring forward a delivery until just after  payday before the start of the next month.
 ![Total Spend per Pay Month](https://rdtodd.co.uk/assets/images/Groceries-fig4.png)
 5. I noticed that I had a increase in the number of substitutions, beginning at the end of February. I therefore decided to calculate the proportions of each delivery that were either; delivered as ordered, substituted or unavailable. This was done based on the count of each item in that category and not the quantity or price. This was then plotted as a discreete bar chart with proportion against the delivery date. It can be seent aht the proportion of substituted items increased in March but then fell again in april. 
 ![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig5.png)
-6. This is the same visual as above but with the delivery date as a continuous variable and the offical start of the UK lockdown (23rd Feb) shown as a vertical line. This graph neatly shows the effect of panic buying on the overall availability of items. also the reason for the large gaps in time between delivery after lockdown was due to the increased demand on online delivery services wich was not present pre-lockdown.
+6. This is the same visual as above but with the delivery date as a continuous variable and the offical start of the UK lockdown (23rd March) shown as a vertical line. This graph neatly shows the effect of panic buying on the overall availability of items. also the reason for the large gaps in time between delivery after lockdown was due to the increased demand on online delivery services wich was not present pre-lockdown.
 ![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig6.png)
 7. SQL  statement to show the ten most frequently delivered items as a count of items:
 ```SQL
@@ -97,8 +100,6 @@ I would also like to work in a basic categorisation based on the headings from t
 
 My long term goal is to create a dashboard, potentially with Dash and plotly, which will allow me and my partner to easily monitor our spending and trends.
 
-### Status:
-Work in progress
 
 [1]: https://github.com/Richard-D-Todd/Extract-Email
 
