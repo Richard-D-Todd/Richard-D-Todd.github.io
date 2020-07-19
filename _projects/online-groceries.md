@@ -61,7 +61,7 @@ I have an analysis Jupyter notebook. With this so far I have several graphs. The
 6. This is the same visual as above but with the delivery date as a continuous variable and the offical start of the UK lockdown (23rd March) shown as a vertical line. This graph neatly shows the effect of panic buying on the overall availability of items. also the reason for the large gaps in time between delivery after lockdown was due to the increased demand on online delivery services wich was not present pre-lockdown.
 ![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig6.png)
 7. SQL  statement to show the ten most frequently delivered items as a count of items:
-```SQL
+```sql
 SELECT item, count(item)
 FROM delivered_items
 GROUP BY item
@@ -69,7 +69,7 @@ ORDER BY count(item) desc
 LIMIT 10;
 ```
 8. Similar to above this SQL statement returns the top ten items based on the sum of quantity instead of the count of occurances in the table.
-```SQL
+```sql
 SELECT item, SUM(quantity) 
 FROM delivered_items
 GROUP BY  item
@@ -77,14 +77,14 @@ ORDER BY SUM(quantity) desc
 LIMIT 10;
 ```
 9. SQL statement to return the top 15 most expensive items by unit price:
-```SQL
+```sql
 SELECT DISTINCT item, unit_price
 FROM delivered_items
 ORDER BY unit_price desc
 LIMIT 15;
 ```
 10. SQL statment to return the top ten items by the total spent on those items
-```SQL
+```sql
 SELECT item, unit_price, SUM(quantity), unit_price * SUM(quantity) AS total_spend
 FROM delivered_items
 GROUP BY item, unit_price
