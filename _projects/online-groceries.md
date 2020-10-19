@@ -18,6 +18,13 @@ gallery:
   - url: /assets/images/Groceries-fig6.png
     image_path: assets/images/Groceries-fig6.png
     alt: "Proportion of delivered, substituted and unavailable items"
+  - url: /assets/images/dashboard_preview.gif
+    image_path: /assets/images/dashboard_preview.gif
+    alt: "groceries dashboard page 1"
+  - url: /assets/images/dashboard_preview_page_2.gif
+    image_path: /assets/images/dashboard_preview_page_2.gif
+    alt: "groceries dashboard page 2"
+
 ---
 
 ## Grocery Shopping Email Analysis
@@ -33,7 +40,7 @@ The aim of this project is to get data from the receipt email sent for my online
 * The common items I buy, and items I have bought once and not bought again.
 
 ### Gallery
-{% include gallery caption="Visuals from the Analysis Notebook" %}
+{% include gallery caption="Visuals from the Analysis Notebook and dashboard" %}
 
 ### Software and tools used:
 * Python is used to extract the contents of the email files, convert them to Pandas DataFrames and then export to .CSV files and a PostgreSQL database. It will then be used for analysis and visualisation, using Pandas and Matplotlib to help me investigate my spending habits.
@@ -49,17 +56,17 @@ The second script works the sdame way as the first, but can be used on a whole d
 
 I have an analysis Jupyter notebook. With this so far I have several graphs. These are shown the gallery above. I have also written SQL queries to return the most expensive and most common items from my shopping. I have created the following:
 1. Bar chart to show total for each delivery against delivery date.
-  ![Total for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig1.png)
+  ![Total for Each Delivery](/assets/images/Groceries-fig1.png)
 2. Bar chart to show the total and subtotal for each delivery. The x axis is still delivery date as above, however the variable is not coninuous and is instead discreete. The reason I did this was because I am not neccessarily interested in the gap between deliveries with this visual, but instead the manitude of the subtotal and the total.
-  ![Total and subtotal for Each Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig2.png)
+  ![Total and subtotal for Each Delivery](/assets/images/Groceries-fig2.png)
 3. Total spend per calendar month ploted as a bar chart, with the average as a horizonal line.
-![Total Spend per Calendar Month](https://rdtodd.co.uk/assets/images/Groceries-fig3.png) 
+![Total Spend per Calendar Month](/assets/images/Groceries-fig3.png) 
 4. Total spend per pay month plotted the same as above. The reason I wanted to show the total spend per pay month is because I get paid on the 27th of each month. This skews the calendar month totals as I may for example delay a payment until after payday when I have more money, or to bring forward a delivery until just after  payday before the start of the next month.
-![Total Spend per Pay Month](https://rdtodd.co.uk/assets/images/Groceries-fig4.png)
+![Total Spend per Pay Month](/assets/images/Groceries-fig4.png)
 5. I noticed that I had a increase in the number of substitutions, beginning at the end of February. I therefore decided to calculate the proportions of each delivery that were either; delivered as ordered, substituted or unavailable. This was done based on the count of each item in that category and not the quantity or price. This was then plotted as a discreete bar chart with proportion against the delivery date. It can be seent aht the proportion of substituted items increased in March but then fell again in april. 
-![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig5.png)
+![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](/assets/images/Groceries-fig5.png)
 6. This is the same visual as above but with the delivery date as a continuous variable and the offical start of the UK lockdown (23rd March) shown as a vertical line. This graph neatly shows the effect of panic buying on the overall availability of items. also the reason for the large gaps in time between delivery after lockdown was due to the increased demand on online delivery services wich was not present pre-lockdown.
-![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](https://rdtodd.co.uk/assets/images/Groceries-fig6.png)
+![Proportion of Items Delivered as Ordered, Substituted and Unavailable per Delivery](/assets/images/Groceries-fig6.png)
 7. SQL  statement to show the ten most frequently delivered items as a count of items:
 ```sql
 SELECT item, count(item)
@@ -100,6 +107,44 @@ I would also like to work in a basic categorisation based on the headings from t
 
 My long term goal is to create a dashboard, potentially with Dash and plotly, which will allow me and my partner to easily monitor our spending and trends.
 
+## Update: 19/10/20
+Since my last update I have created a dashboard for my groceries project. The dashboard was created using the Dash library in python and is deployed using the [Heroku service](2).
+
+Dash is used to create the figures and the interactive elements such as the dropdowns and radio buttons. It also allows the plots to interact with each other. The plots themselves are created using the Plotly plotting library.
+
+### Orders overview page
+The first page I created has the time series chart with the totals for each order. The second visual the monthly totals for orders. the incomplete month to date is coloured in orange to differentiate it. There are two different 'modes' for the monthly total:
+
+1. Calendar month: This groups the data by the calendar month.
+2. Pay period: I currently get paid on the 27th of each month. I found that I was planning shops based around pay day and so I created a pay period view to show spending per pay period. For example June is from 27/05/2020 to 26/06/2020.
+
+The bars in the monthly view can be used to highlight the corresponding bars in the time series chart at the top of the page. Multiple months can be selected.
+
+the last visual shows the proportion of the items in the order which were either:
+1. Delivered as ordered. (called available)
+2. Substituted for another product.
+3. Unavailable and thefore not delivered and without substitution. (called unavailable)
+
+This visual can be toggled between a time series view that has time as continuous variable on the x-axis. The second is a compact view which makes the x-axis discreet variables with each delivery date as a distinct label.
+
+![dashboard page 1](/assets/images/dashboard_preview.gif)
+
+###  Order details page
+The second page shows the order details. A dropdown is used to select a specific order. this then populates the table with all the delivered items for that order. This includes the item name and both the cost, quantity and unit cost.
+
+Below the table is a bar chart which shows the number of items that are:
+1. Delivered as ordered. (called available)
+2. Substituted for another product.
+3. Unavailable and thefore not delivered and without substitution. (called unavailable)
+
+Finally the bottom visual shows the above counts as proportions on a single bar.
+
+![dashboard page 2](/assets/images/dashboard_preview_page_2.gif)
+
+### Going forward
+the next aim is to develop a third page which shows trends in the items I am buying. For this I first want to categorise all the delivered items so tha I can look into categories of similar items rather than specific brands and items. I also want to create it so that I don't have to manually save the eml files for processing and can instead have a script connect directly to my outlook account and grab the email from there.
+
+---
 
 [1]: https://github.com/Richard-D-Todd/Extract-Email
-
+[2]: https://www.heroku.com/
