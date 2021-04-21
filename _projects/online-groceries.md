@@ -31,23 +31,67 @@ gallery:
 [Project repo on Github][1]
 
 ### Context:
-I do my regular grocery shops online though the British supermarket chain ASDA. After the delivery is packed and on the way an email is sent to me with a breakdown of which items are unavailable, substituted and sent as ordered, along with the prices and quantities. I want to be able to collect this data and analyse my spending on groceries.
+I do my regular grocery shops online through the British supermarket chain ASDA. After the delivery is packed and on the way an email is sent to me with a breakdown of which items are unavailable, substituted and sent as ordered, along with the prices and quantities. I want to be able to collect this data and analyse my spending on groceries.
 
 ### Aims:
-The aim of this project is to get data from the receipt email sent for my online food shops. This data will then be collated in a database ready for analysis. I would like to investigate the following:
+The aim of this project is to get data from the receipt email sent for my online food shops. This data will then be loaded into a database ready for analysis. I would like to investigate the following:
 * My spending habits and how these change over time.
 * Places were I could potentially save money, or are overspending.
-* The common items I buy, and items I have bought once and not bought again.
+* The common items I buy.
 
 ### Gallery
 {% include gallery caption="Visuals from the Analysis Notebook and dashboard" %}
 
 ### Software and tools used:
-* Python is used to extract the contents of the email files, convert them to Pandas DataFrames and then export to .CSV files and a PostgreSQL database. It will then be used for analysis and visualisation, using Pandas and Matplotlib to help me investigate my spending habits.
-* PostgreSQL is used for a database to hold the data extracted from the emails. Since I will have multiple tables, I will use SQL statements inline in a Jupyter notebook to query the tables.
+* python is used to extract the data from the receipt emails. this is done in the followinf steps:
+   1. I used the library ExchangeLib to connect to my outlook email account and save the email body and details to variables.
+   2. I parsed the emails for the relevant data and then saved them to Pandas dataframes. From there i cleaned the data and did some basic transformations.
+   3. I used the SQLalchemy library to connect to my PostgreSQL database and save the dataframes to database tables.
+   4. I developed a dashboard using the Dash library, creating the visuals with the Plotly graphing library.
+* PosgreSQL was used to create my database for storing my groceries data.
+* I used git for version control and also to allow me to deploy my dashboard to the cloud using the Heroku service.
+* I use a RaspberryPi computer to host a my PostgreSQL database and to deploy the dashboard on my home network.
 
 ### Status:
 Work in progress
+
+## Update: 19/10/20
+Since my last update I have created a dashboard for my groceries project. The dashboard was created using the Dash library in python and is deployed using the [Heroku service](2).
+
+Dash is used to create the figures and the interactive elements such as the dropdowns and radio buttons. It also allows the plots to interact with each other. The plots themselves are created using the Plotly plotting library.
+
+### Orders overview page
+The first page I created has the time series chart with the totals for each order. The second visual the monthly totals for orders. the incomplete month to date is coloured in orange to differentiate it. There are two different 'modes' for the monthly total:
+
+1. Calendar month: This groups the data by the calendar month.
+2. Pay period: I currently get paid on the 27th of each month. I found that I was planning shops based around pay day and so I created a pay period view to show spending per pay period. For example June is from 27/05/2020 to 26/06/2020.
+
+The bars in the monthly view can be used to highlight the corresponding bars in the time series chart at the top of the page. Multiple months can be selected.
+
+the last visual shows the proportion of the items in the order which were either:
+1. Delivered as ordered. (called available)
+2. Substituted for another product.
+3. Unavailable and thefore not delivered and without substitution. (called unavailable)
+
+This visual can be toggled between a time series view that has time as continuous variable on the x-axis. The second is a compact view which makes the x-axis discreet variables with each delivery date as a distinct label.
+
+![dashboard page 1](/assets/images/dashboard_preview.gif)
+
+###  Order details page
+The second page shows the order details. A dropdown is used to select a specific order. this then populates the table with all the delivered items for that order. This includes the item name and both the cost, quantity and unit cost.
+
+Below the table is a bar chart which shows the number of items that are:
+1. Delivered as ordered. (called available)
+2. Substituted for another product.
+3. Unavailable and thefore not delivered and without substitution. (called unavailable)
+
+Finally the bottom visual shows the above counts as proportions on a single bar.
+
+![dashboard page 2](/assets/images/dashboard_preview_page_2.gif)
+
+### Going forward
+the next aim is to develop a third page which shows trends in the items I am buying. For this I first want to categorise all the delivered items so tha I can look into categories of similar items rather than specific brands and items. I also want to create it so that I don't have to manually save the eml files for processing and can instead have a script connect directly to my outlook account and grab the email from there.
+
 
 ## Update: 18/07/20
 Currently with this project I have two python scripts. One which can take a receipt email, extract and clean the data and then save to CSV and enter the data into a PostgreSQL database.
@@ -106,43 +150,6 @@ I have my first initial visualisations and SQL queries created. Recently ASDA ch
 I would also like to work in a basic categorisation based on the headings from the receipt email. For example, frozen, fridge and cupboard categories.
 
 My long term goal is to create a dashboard, potentially with Dash and plotly, which will allow me and my partner to easily monitor our spending and trends.
-
-## Update: 19/10/20
-Since my last update I have created a dashboard for my groceries project. The dashboard was created using the Dash library in python and is deployed using the [Heroku service](2).
-
-Dash is used to create the figures and the interactive elements such as the dropdowns and radio buttons. It also allows the plots to interact with each other. The plots themselves are created using the Plotly plotting library.
-
-### Orders overview page
-The first page I created has the time series chart with the totals for each order. The second visual the monthly totals for orders. the incomplete month to date is coloured in orange to differentiate it. There are two different 'modes' for the monthly total:
-
-1. Calendar month: This groups the data by the calendar month.
-2. Pay period: I currently get paid on the 27th of each month. I found that I was planning shops based around pay day and so I created a pay period view to show spending per pay period. For example June is from 27/05/2020 to 26/06/2020.
-
-The bars in the monthly view can be used to highlight the corresponding bars in the time series chart at the top of the page. Multiple months can be selected.
-
-the last visual shows the proportion of the items in the order which were either:
-1. Delivered as ordered. (called available)
-2. Substituted for another product.
-3. Unavailable and thefore not delivered and without substitution. (called unavailable)
-
-This visual can be toggled between a time series view that has time as continuous variable on the x-axis. The second is a compact view which makes the x-axis discreet variables with each delivery date as a distinct label.
-
-![dashboard page 1](/assets/images/dashboard_preview.gif)
-
-###  Order details page
-The second page shows the order details. A dropdown is used to select a specific order. this then populates the table with all the delivered items for that order. This includes the item name and both the cost, quantity and unit cost.
-
-Below the table is a bar chart which shows the number of items that are:
-1. Delivered as ordered. (called available)
-2. Substituted for another product.
-3. Unavailable and thefore not delivered and without substitution. (called unavailable)
-
-Finally the bottom visual shows the above counts as proportions on a single bar.
-
-![dashboard page 2](/assets/images/dashboard_preview_page_2.gif)
-
-### Going forward
-the next aim is to develop a third page which shows trends in the items I am buying. For this I first want to categorise all the delivered items so tha I can look into categories of similar items rather than specific brands and items. I also want to create it so that I don't have to manually save the eml files for processing and can instead have a script connect directly to my outlook account and grab the email from there.
 
 ---
 

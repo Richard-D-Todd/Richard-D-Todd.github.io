@@ -24,7 +24,7 @@ gallery:
 [Project repo on Github][1]
 
 ### Context:
-I regularly play the popular roleplaying game Dungeons and Dragons with a group of friends. This game is focused around the rolling of various dice to determine player outcomes, in particular 20 sided dice. This got me curious as to how I could calculate the probabilities of outcomes for rolling multiple dice, and rolling dice of various dimensions.
+I regularly play the popular roleplaying game Dungeons and Dragons with a group of friends. This game is focused around the rolling of various dice to determine player outcomes, in particular a 20 sided dice. This got me curious as to how I could calculate the probabilities of outcomes for rolling multiple dice, and rolling dice of various dimensions.
 
 ### Aims:
 * Plot the probabilities of various dice rolls in Matplotlib.
