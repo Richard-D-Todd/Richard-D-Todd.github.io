@@ -84,7 +84,7 @@ def connect_to_exchange():
     return account
 ```
 
-I then get the date the email weas received, subject and body of every email in the 'ASDa Order Receipts' folder.
+I then get the date the email weas received, subject and body of every email in the 'ASDA Order Receipts' folder.
 
 ```python
 receipt_folder = account.inbox / 'ASDA Order Receipts'
@@ -95,7 +95,7 @@ item_details = items.values('datetime_received', 'subject', 'body')
 
 the rest of the script loops through each email item and does the same prcessing as the extract from file scripts previously created.
 
-One an email file has been processed the email is moved to a 'processed' subfolder so that it is not duplicated when the script is next ran.
+Once an email file has been processed the email is moved to a 'processed' subfolder so that it is not duplicated when the script is next ran.
 ```python
 # Move email to 'processed' folder
 processed_folder = receipt_folder / 'processed'
