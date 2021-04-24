@@ -55,6 +55,99 @@ The aim of this project is to get data from the receipt email sent for my online
 ### Status:
 Work in progress
 
+## Update: 24/04/21
+I have made several changes to this project since my last update. These are:
+1. Wrote a script that can extact the email data directly from my microsoft email account, without having to export the email as a .eml file.
+2. The local PosgreSQL database is now hosted on a RaspberryPi single board computer.
+3. The local version of my dashboard is now hosted on my RaspberryPi.
+4. Added a cumulative chart on the home page to show how much I have spent since my first ASDA order.
+
+### Extracting data directly from outlook
+My receipt emails are moved to a specific folder using a rule set-up on my inbox which looks at the subject line.
+
+i use the library exchangelib. More information on this library can be found [here][3]. In my script I have a function which sets up the connect. My credentials are read from a .ini file using the ConfigParse library.
+
+```Python
+def connect_to_exchange():
+    """
+    Function to connect to microsoft exchange mail server based on credentials in exchange_credentials.ini file
+    """
+    # Importing account email address and password
+    config = configparser.ConfigParser()
+    config.read('exchange_credentials.ini')
+    email_address = config['credentials']['email_address']
+    password = config['credentials']['password']
+
+    # Defining credentials for exchange account and setting account
+    credentials = Credentials(email_address, password)
+    account = Account(email_address, credentials = credentials, autodiscover = True)
+    return account
+```
+
+I then get the date the email weas received, subject and body of every email in the 'ASDa Order Receipts' folder.
+
+```python
+receipt_folder = account.inbox / 'ASDA Order Receipts'
+items = receipt_folder.all().order_by('datetime_received')
+# Extract datetime_received, subject and body from each item
+item_details = items.values('datetime_received', 'subject', 'body')
+```
+
+the rest of the script loops through each email item and does the same prcessing as the extract from file scripts previously created.
+
+One an email file has been processed the email is moved to a 'processed' subfolder so that it is not duplicated when the script is next ran.
+```python
+# Move email to 'processed' folder
+processed_folder = receipt_folder / 'processed'
+items[0].move(processed_folder)
+print(f"Email moved to processed folder for file {item_num} out of {num_emails}")
+item_num += 1
+```
+
+### Host database and dashboard on RaspberryPi
+I now host the groceries PostgreSQL database on my RaspberryPi instead of my PC. The only change that was required was to point my *create_sqlalchemy_engine()* function to by database. Again I did this with a .ini file.
+
+```python
+def create_sqlalchemy_engine():
+    """
+    This function creates a sqlalchemy engine with the credentials stored in the credentials.py file
+    """
+    config = configparser.ConfigParser()
+    config.read('database.ini')
+    username = config['postgresql']['user']
+    password = config['postgresql']['password']
+    database = config['postgresql']['database']
+    host = config['postgresql']['host']
+    con_string = 'postgresql+psycopg2://{}:{}@{}/{}?gssencmode=disable'.format(username, password, host, database)
+    engine = create_engine(con_string)
+    print("Local DB: {}".format(con_string))
+    return engine
+```
+
+To launch the dashboard on my RaspberryPi I wrote a Bash shell script to activate the required virtual environment and then launch the dashboard script (index.py is the script which launches the Dash server).
+
+```bash
+#! /bin/bash
+
+echo 'activating virtual environment'
+activate () {
+	. groceries_venv/bin/activate
+}
+activate
+echo 'launching dashboard'
+cd Dashboard
+python index.py
+```
+
+### Further changes I would like to make
+Now that I have a script which can extract the data directly from my email account I can automate the process of data extraction. Currently I have to manually run this script after every delivery. 
+
+Since the RaspberryPi has such low power consumption I plan to schedule the extract from exchange script to run everyday that an order is delivered. I could do this using a CRON job. To do this I would want to know when an error is encountered, therefore I will also research the best way to handle errors in my script, log these errors and also notify me when an issue is encountered.
+
+In terms of the dashboard itself I would like to start categorising the products which have been delivered. The reason for this is it would allow me to beter investigate my spending patterns. My plan for this is to write Python script which gets all the products from my database and then ask me to input multiple categories and subcategories for each product. This would then be saved in another table in my database, just to store these categorisations.
+
+Recently on my apprenticeship I have been learning about time series analysis. i would like to apply some of these techniques, such as a rolling mean and potentially some forecasting. I envisage the forecasting not being too difficult as my data is fairly static.
+
 ## Update: 19/10/20
 Since my last update I have created a dashboard for my groceries project. The dashboard was created using the Dash library in python and is deployed using the [Heroku service](2).
 
@@ -155,3 +248,4 @@ My long term goal is to create a dashboard, potentially with Dash and plotly, wh
 
 [1]: https://github.com/Richard-D-Todd/Extract-Email
 [2]: https://www.heroku.com/
+[3]: https://ecederstrand.github.io/exchangelib/
