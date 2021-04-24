@@ -67,7 +67,7 @@ My receipt emails are moved to a specific folder using a rule set-up on my inbox
 
 i use the library exchangelib. More information on this library can be found [here][3]. In my script I have a function which sets up the connect. My credentials are read from a .ini file using the ConfigParse library.
 
-```Python
+```python
 def connect_to_exchange():
     """
     Function to connect to microsoft exchange mail server based on credentials in exchange_credentials.ini file
