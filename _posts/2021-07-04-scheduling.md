@@ -25,7 +25,7 @@ sudo nano run_exchange_extract_script.sh
 ```
 This created a BASH shell file. I then typed the below to launch the correct virtual environment and run the Python script.
 
-```s
+```
 #! /bin/bash
 
 echo 'activating virtual environment'
