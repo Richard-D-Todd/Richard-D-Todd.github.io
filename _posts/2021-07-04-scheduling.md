@@ -65,7 +65,7 @@ The above starts with a the time the tast should run. So 0 is the says at 0 minu
 ## Automating the dashboard refresh
 To refresh I dashboard I decided that I would have the dashboard script run constantly on my raspbery pi, then once an hour my dashboard updates. This is done through the Interval element in the Dash Python library. This means that any call back with this element as an input will refresh after the specified interval (in milliseconds).
 
-```Python
+```python
 dcc.Interval(
     id='interval_component',
     interval=3600000, #1 hour in milliseconds
@@ -74,7 +74,7 @@ dcc.Interval(
 
 An example of how this is used is to query the database for the first figure on the order overview tab.
 
-```Python
+```python
 @app.callback(
     Output(component_id='total_per_delivery', component_property='figure'),
     [Input(component_id='total_by_month', component_property='selectedData'),
