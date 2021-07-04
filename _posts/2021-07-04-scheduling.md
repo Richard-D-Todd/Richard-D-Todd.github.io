@@ -20,12 +20,12 @@ The first step in automating the collection of my data from my receipt emails is
 
 I connected to the raspberry pi via SSH and then entered the below command.
 
-```Shell
+```
 sudo nano run_exchange_extract_script.sh
 ```
 This created a BASH shell file. I then typed the below to launch the correct virtual environment and run the Python script.
 
-```Shell
+```s
 #! /bin/bash
 
 echo 'activating virtual environment'
@@ -39,18 +39,18 @@ python extract_from_exchange_script.py
 ```
 
 the script is then turned into an executable file using the below command.
-```Shell
+```
 sudo chmod +x run_exchange_extract_script.sh
 ```
 
 Now to run this file I just enter the below.
 
-```Shell
+```
 sh run_exchange_extract_script.sh
 ```
 I then set a Cronjob to run the above script once an hour between 10:00 to 18:00 every day. This means that I do not need to manually run the script after every groceries delivery anymore. To set up a Cron job I typed.
 
-```Shell
+```
 crontab -e
 ```
 
