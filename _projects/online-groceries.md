@@ -69,7 +69,7 @@ On my apprenticeship course I was learning about time series analysis in Python.
 
 This was accomplished with a single line of code. 
 
-```Python
+```python
 # Calculate the 3 order rolling mean
 df['rolling_mean'] = df.total.rolling(window=3).mean()
 ```
@@ -83,7 +83,7 @@ Finally I changed the item availability time series to an area chart.
 
 The code to do this in Plotly is below:
 
-```Python
+```python
 fig3 = px.area(data_frame=df,
         x='delivery_date',
         y=['available', 'substituted', 'unavailable'],
@@ -104,7 +104,7 @@ In order for the dashboard script to run continuously but still show new orders 
 
 this is done using the *dcc.Interval* component. Below I have put the component in the layout for the orders overview page. The interval is set to 3,600,000 milliseconds which is 1 hour.
 
-```Python
+```python
 layout = html.Div([
     nav,
     body,
@@ -118,7 +118,7 @@ layout = html.Div([
 
 Then in the callbacks I put the interval component as an input.
 
-```Python
+```python
 @app.callback(
     Output(component_id='total_per_delivery', component_property='figure'),
     [Input(component_id='total_by_month', component_property='selectedData'),
@@ -130,7 +130,7 @@ This then refreshes anything inside the a function within that callback.
 
 For this to refresh the data as well as the graphs I had to move the database queries inside of the callback functions. For example:
 
-```Python
+```python
 def create_graph_1(selected, month_type, n):
     df = pd.read_sql_table('order_details', con=engine)
 ```
@@ -141,7 +141,7 @@ For the script that extracts the email data from my asda emails I wanted to add 
 {% include video id="-ARI4Cz-awo" provider="youtube" %}
 
 I set-up a log file and the basic config:
-```Python
+```python
 ### Logging config ###
 logging.basicConfig(filename='extract_from_exchange.log', level=logging.DEBUG,
                     format='%(asctime)s:%(levelname)s:%(message)s')
@@ -150,7 +150,7 @@ logging.basicConfig(filename='extract_from_exchange.log', level=logging.DEBUG,
 I put key blocks of code in *try except* blocks and used *logging.exception(...)* followed by *raise* to save a customer error message and then the traceback to a log file.
 
 For example in the function to connect to my microsoft email account.
-```Python
+```python
 def connect_to_exchange():
     """
     Function to connect to microsoft exchange mail server based on credentials in exchange_credentials.ini file
@@ -177,7 +177,7 @@ def connect_to_exchange():
 ### 3. Raspberry Pi set-up
 I created a shell script to run the *extract_from_exchange_script.py* file which grabs the data from my emails and inserts it into my database. 
 
-```Shell
+```shell
 #! /bin/bash
 
 echo 'activating virtual environment'
@@ -191,7 +191,7 @@ python extract_from_exchange_script.py
 ```
 
 I then use the *crontab* service to run this script on the hour every day between 10am and 6pm.
-```
+```shell
 0 10-18 * * * cd /home/pi/Documents/Programming/Groceries-Analysis && ./run_exchange_extract_script.sh
 ```
 
