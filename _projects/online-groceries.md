@@ -55,6 +55,152 @@ The aim of this project is to get data from the receipt email sent for my online
 ### Status:
 Work in progress
 
+## Update: 11/07/21
+Since the last update I have made several key changes. I will break this down into changes to the:
+
+1. The dashboard UI and visuals
+2. Extract script and dashboard script
+3. Raspberry pi hosting set-up
+
+### 1. Dashboard changes
+On my apprenticeship course I was learning about time series analysis in Python. I decided to add a rolling average to the orders over time and order totals per month views on the *orders overview* page.
+
+![time series with rolling average](/assets/images/time_series_with_rolling_avg.png)
+
+This was accomplished with a single line of code. 
+
+```Python
+# Calculate the 3 order rolling mean
+df['rolling_mean'] = df.total.rolling(window=3).mean()
+```
+*df.total* is the order totals column, *.rolling(window=3)* sets the rolling average window to 3 orders and the *.mean* sets the aggregate function to the mean.
+
+This was also done with the monthly order totals view.
+![monthly view with rolling average](/assets/images/monthly_view_with_rolling_avg.png)
+
+Finally I changed the item availability time series to an area chart.
+![item availability time series](/assets/images/order_availability_area.png)
+
+The code to do this in Plotly is below:
+
+```Python
+fig3 = px.area(data_frame=df,
+        x='delivery_date',
+        y=['available', 'substituted', 'unavailable'],
+        labels={'delivery_date': 'Delivery Date', 
+        'value': 'Proportion',
+        'variable': 'Item Availability'},
+        color_discrete_map={
+        "available": 'rgb(85,168,104)',
+        "substituted": 'rgb(221,132,82)',
+        "unavailable": 'rgb(196,78,82)'
+        },
+        template=template,            
+)
+fig3.update_xaxes(dtick = "M1", tickformat = "%d %b '%y", tickangle=45)
+```
+### 2.a Dashboard script changes
+In order for the dashboard script to run continuously but still show new orders when they have been loaded into the database I decided that I would the inbuilt dash interval functionality. I have a post about it on my latest blog post, but the idea is that you set the Dash *callbacks* to refresh after a specified number of milliseconds. 
+
+this is done using the *dcc.Interval* component. Below I have put the component in the layout for the orders overview page. The interval is set to 3,600,000 milliseconds which is 1 hour.
+
+```Python
+layout = html.Div([
+    nav,
+    body,
+    dcc.Interval(
+        id='interval_component',
+        interval=3600000, #1 hour in milliseconds
+        n_intervals=0
+    )
+    ])
+```
+
+Then in the callbacks I put the interval component as an input.
+
+```Python
+@app.callback(
+    Output(component_id='total_per_delivery', component_property='figure'),
+    [Input(component_id='total_by_month', component_property='selectedData'),
+    Input(component_id='select_month_type', component_property='value'),
+    Input(component_id='interval_component', component_property='n_intervals')]
+)
+```
+This then refreshes anything inside the a function within that callback. 
+
+For this to refresh the data as well as the graphs I had to move the database queries inside of the callback functions. For example:
+
+```Python
+def create_graph_1(selected, month_type, n):
+    df = pd.read_sql_table('order_details', con=engine)
+```
+
+### 2.b Extract script changes
+For the script that extracts the email data from my asda emails I wanted to add some logging functionality. The reason is I has previously put print statements that would provide debugging and progress updates to the console. With the move to automating the running of this script to a cronjob I no longer saw the outputs printed to the console and so had no way to easily check is the script had ran successfully. I therefore researched how to log outputs in Python. For this I found a video by the youtuber Corey Schafer very useful.
+
+{% include video id="-ARI4Cz-awo" provider="youtube" %}
+
+I set-up a log file and the basic config:
+```Python
+### Logging config ###
+logging.basicConfig(filename='extract_from_exchange.log', level=logging.DEBUG,
+                    format='%(asctime)s:%(levelname)s:%(message)s')
+```
+
+I put key blocks of code in *try except* blocks and used *logging.exception(...)* followed by *raise* to save a customer error message and then the traceback to a log file.
+
+For example in the function to connect to my microsoft email account.
+```Python
+def connect_to_exchange():
+    """
+    Function to connect to microsoft exchange mail server based on credentials in exchange_credentials.ini file
+    """
+    # Importing account email address and password
+    try:
+        config = configparser.ConfigParser()
+        config.read('exchange_credentials.ini')
+        email_address = config['credentials']['email_address']
+        password = config['credentials']['password']
+    except:
+        logging.exception("Error in reading exchange account credentials")
+        raise
+    # Defining credentials for exchange account and setting account
+    try:
+        credentials = Credentials(email_address, password)
+        account = Account(email_address, credentials = credentials, autodiscover = True)
+    except:
+        logging.exception("Unable to connect to Exchange account")
+        raise
+    return account
+  ```
+
+### 3. Raspberry Pi set-up
+I created a shell script to run the *extract_from_exchange_script.py* file which grabs the data from my emails and inserts it into my database. 
+
+```Shell
+#! /bin/bash
+
+echo 'activating virtual environment'
+activate () {
+        . groceries_venv/bin/activate
+}
+activate
+echo 'launching script'
+cd 'Extract From Exchange'
+python extract_from_exchange_script.py
+```
+
+I then use the *crontab* service to run this script on the hour every day between 10am and 6pm.
+```
+0 10-18 * * * cd /home/pi/Documents/Programming/Groceries-Analysis && ./run_exchange_extract_script.sh
+```
+
+So in summary I have made some changes to the look of the dashboard, added rolling averages, automated updates my database and dashboard and added a logging system to the extraction script.
+
+### Further changes to make
+
+The next thing i want to develop is a script that pulls the items from my database, then asks me to label the items into several categories. I can then put these categories into their own table on the database. The reason for this is I have still not added the ability to look into trends of what I am buying with each order. Therefore by categorising my shopping I will then be able to look at which categories I am spending the most money and other questions.
+
 ## Update: 24/04/21
 I have made several changes to this project since my last update. These are:
 1. Wrote a script that can extact the email data directly from my microsoft email account, without having to export the email as a .eml file.
